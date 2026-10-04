@@ -1,8 +1,3 @@
-"""Starter dataset: 24 hand-written sentences per variety.
-
-This is a toy set so the project runs end to end. For real numbers, replace
-load_data() with a loader for a real corpus (ICE, GLoWbE, TwitterAAE, etc.).
-"""
 
 DATA = {
     "American": [
