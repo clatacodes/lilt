@@ -7,26 +7,13 @@ import json
 
 import joblib
 import numpy as np
-from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import accuracy_score, classification_report, f1_score
 from sklearn.model_selection import GroupKFold, GroupShuffleSplit, cross_val_predict
-from sklearn.pipeline import FeatureUnion, Pipeline
 
-from data import load_data
+from data import load_data, load_fresh
+from features import build_pipeline
 
 SEED = 42
-
-
-def build_pipeline():
-    features = FeatureUnion(
-        [
-            ("word", TfidfVectorizer(lowercase=True, ngram_range=(1, 2), sublinear_tf=True)),
-            ("char", TfidfVectorizer(lowercase=True, analyzer="char_wb", ngram_range=(2, 5), sublinear_tf=True)),
-        ]
-    )
-    clf = LogisticRegression(max_iter=2000, C=10.0)
-    return Pipeline([("features", features), ("clf", clf)])
 
 
 def main():
@@ -54,9 +41,12 @@ def main():
     print(f"5-fold CV macro-F1: {cv_f1:.3f}\n")
     print(classification_report(labels, cv_pred, digits=3))
 
-    # Final model trained on everything
+    # Final model trained on everything, then scored once on the separate test set
     final = build_pipeline().fit(texts, labels)
     joblib.dump(final, "model.joblib")
+    f_texts, f_labels = load_fresh()
+    fresh_acc = accuracy_score(f_labels, final.predict(f_texts))
+    print(f"Separate test set accuracy: {fresh_acc:.3f}  (n={len(f_labels)})")
 
     with open("metrics.json", "w") as f:
         json.dump(
@@ -65,6 +55,8 @@ def main():
                 "holdout_macro_f1": round(holdout_f1, 4),
                 "cv_accuracy": round(cv_acc, 4),
                 "cv_macro_f1": round(cv_f1, 4),
+                "fresh_accuracy": round(fresh_acc, 4),
+                "fresh_n": int(len(f_labels)),
                 "n_examples": int(len(labels)),
                 "n_varieties": int(len(set(labels))),
                 "varieties": sorted(set(labels.tolist())),
