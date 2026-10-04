@@ -60,9 +60,10 @@
 <div id="out" aria-live="polite"></div>
 
 <p class="note">
-  Test accuracy: {{ (metrics.cv_accuracy * 100) | round(1) }}% on
-  {{ metrics.n_examples }} sentences across {{ metrics.n_varieties }} varieties
-  ({{ metrics.varieties | join(", ") }}), using 5-fold cross-validation.
+  Accuracy: {{ (metrics.cv_accuracy * 100) | round(1) }}% in 5-fold cross-validation
+  ({{ metrics.n_examples }} sentences) and {{ (metrics.fresh_accuracy * 100) | round(1) }}% on a
+  separate set of {{ metrics.fresh_n }} new sentences, across {{ metrics.n_varieties }} varieties
+  ({{ metrics.varieties | join(", ") }}).
   Guessing at random would score {{ (100 / metrics.n_varieties) | round(0) | int }}%.
   The model is trained on a small hand-written set, so treat results as rough.
 </p>
