@@ -152,3 +152,51 @@ def load_data():
             labels.append(label)
             groups.append(i)
     return texts, labels, groups
+
+
+# Separate test set, written after the training set and never used for training.
+FRESH = {
+ "American": [
+  "We're out of milk, so I'll swing by the store on my way home.",
+  "The bus was late again, which is why I took an Uber to the airport.",
+  "She keeps her sweatshirt in the trunk of her car for the football games.",
+  "My roommate just bought a new couch for the living room.",
+  "Let's grab lunch downtown and then check out the new mall.",
+ ],
+ "British": [
+  "We've run out of milk, so I'll nip into the shop on my way home.",
+  "The bus was late again, which is why I took a taxi to the airport.",
+  "She keeps her wellies in the boot of her car for the rugby.",
+  "My flatmate has just bought a new sofa for the lounge.",
+  "Let's grab lunch in town and then have a look at the new shopping centre.",
+ ],
+ "Australian": [
+  "We're out of milk, so I'll duck down to the shops on my way home.",
+  "The bus was late again, so I grabbed an Uber to the airport, no worries.",
+  "She keeps her thongs in the boot of her ute for the footy.",
+  "My flatmate just bought a new couch for the lounge room, reckon it's ripper.",
+  "Let's get some lunch in town then check out the new shopping centre, mate.",
+ ],
+ "Indian": [
+  "The milk is finished, so I will go to the shop on the way home only.",
+  "The bus was late again, that is why I took an auto to the railway station.",
+  "She is keeping her umbrella in the dickey of her car for the match.",
+  "My roommate has just bought one new sofa for the hall.",
+  "Let us go for lunch in the city and then see the new mall, no?",
+ ],
+ "Singaporean": [
+  "No more milk already, I go supermarket on the way home okay.",
+  "The bus late again, that's why I take Grab to the airport lor.",
+  "She keep her umbrella in the car boot for the match, very prepared one.",
+  "My housemate just buy a new sofa for the living room, quite nice sia.",
+  "Let's go eat lunch in town then walk the new mall, can?",
+ ],
+}
+
+def load_fresh():
+    texts, labels = [], []
+    for label, sentences in FRESH.items():
+        for s in sentences:
+            texts.append(s)
+            labels.append(label)
+    return texts, labels
