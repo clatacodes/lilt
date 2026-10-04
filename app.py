@@ -1,4 +1,3 @@
-"""Run:  python app.py   then open http://127.0.0.1:5000"""
 import json
 import os
 
